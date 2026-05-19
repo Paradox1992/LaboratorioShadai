@@ -24,7 +24,8 @@ class ValorReferenciaSelectorTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('nivel.nombre')
-                    ->label('Nivel')
+                    ->label('Nombre del nivel')
+                    ->state(fn (ValorReferencia $record): string => $record->nivel?->nombre ?? '-')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('sexo')

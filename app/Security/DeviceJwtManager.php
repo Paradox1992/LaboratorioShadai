@@ -54,6 +54,43 @@ class DeviceJwtManager
             return null;
         }
 
+        return $this->resolveDeviceFromPayload($jwt, $payload, $request);
+    }
+
+    public function deviceFromFingerprint(string $fingerprint, Request $request): ?RegisteredDevice
+    {
+        if (blank($fingerprint)) {
+            return null;
+        }
+
+        $device = RegisteredDevice::query()
+            ->where('fingerprint_hash', hash('sha256', $fingerprint))
+            ->where('estado', true)
+            ->first();
+
+        if (! $device) {
+            return null;
+        }
+
+        if (filled($device->user_agent_registro) && ! hash_equals((string) $device->user_agent_registro, (string) $request->userAgent())) {
+            return null;
+        }
+
+        return $device;
+    }
+
+    public function ttlMinutes(): int
+    {
+        return max(1, (int) config('shadai.device_token_ttl_minutes', 180));
+    }
+
+    private function signingKey(): string
+    {
+        return (string) config('app.key');
+    }
+
+    private function resolveDeviceFromPayload(string $jwt, object $payload, Request $request): ?RegisteredDevice
+    {
         $deviceId = (int) ($payload->device_id ?? $payload->sub ?? 0);
         $jwtId = (string) ($payload->jti ?? '');
         $deviceHash = (string) ($payload->device_hash ?? '');
@@ -88,16 +125,6 @@ class DeviceJwtManager
         $accessToken->forceFill(['last_used_at' => now()])->save();
 
         return $accessToken->device;
-    }
-
-    public function ttlMinutes(): int
-    {
-        return max(1, (int) config('shadai.device_token_ttl_minutes', 180));
-    }
-
-    private function signingKey(): string
-    {
-        return (string) config('app.key');
     }
 
     private function userAgentHash(Request $request): string

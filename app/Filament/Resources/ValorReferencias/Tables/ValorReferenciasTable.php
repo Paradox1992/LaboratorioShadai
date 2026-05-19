@@ -13,17 +13,21 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ValorReferenciasTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with(['nivel', 'variante']))
             ->columns([
                 TextColumn::make('variante.nombre')
                     ->label('Variante')
                     ->searchable(),
-                TextColumn::make('nivel.id')
+                TextColumn::make('nivel.nombre')
+                    ->label('Nivel')
+                    ->placeholder('-')
                     ->searchable(),
                 TextColumn::make('sexo')
                     ->searchable(),

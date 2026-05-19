@@ -15,7 +15,7 @@ class ValorReferenciaInfolist
             ->components([
                 TextEntry::make('variante.id')
                     ->label('Variante'),
-                TextEntry::make('nivel.id')
+                TextEntry::make('nivel.nombre')
                     ->label('Nivel')
                     ->placeholder('-'),
                 TextEntry::make('sexo'),

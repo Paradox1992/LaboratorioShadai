@@ -8,6 +8,7 @@ use App\Models\RegisteredDevice;
 use App\Models\User;
 use App\Security\DeviceJwtManager;
 use App\UserRole;
+use Firebase\JWT\JWT;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,13 @@ class DeviceAccessTokenTest extends TestCase
             ->middleware(EnsureRegisteredDevice::class);
     }
 
+    protected function tearDown(): void
+    {
+        JWT::$timestamp = null;
+
+        parent::tearDown();
+    }
+
     public function test_registered_device_receives_an_encrypted_jwt_cookie(): void
     {
         $device = $this->createDeviceWithRegistrationToken('registration-token');
@@ -35,7 +43,8 @@ class DeviceAccessTokenTest extends TestCase
 
         $response
             ->assertRedirect('/admin/login')
-            ->assertCookie(config('shadai.device_cookie'));
+            ->assertCookie(config('shadai.device_cookie'))
+            ->assertCookie(config('shadai.device_fingerprint_cookie'));
 
         $this->assertDatabaseHas('tokens_acceso_dispositivo', [
             'dispositivo_registrado_id' => $device->id,
@@ -61,19 +70,32 @@ class DeviceAccessTokenTest extends TestCase
         $this->assertNotNull(DeviceAccessToken::query()->first()->last_used_at);
     }
 
-    public function test_middleware_rejects_expired_tokens(): void
+    public function test_middleware_redirects_expired_tokens_to_login(): void
     {
         ['token' => $encryptedToken] = $this->createDeviceToken();
 
-        DeviceAccessToken::query()->update([
-            'expires_at' => now()->subMinute(),
-        ]);
+        JWT::$timestamp = now()->addHours(4)->getTimestamp();
 
         $this
             ->withUnencryptedCookie(config('shadai.device_cookie'), $encryptedToken)
             ->withHeader('User-Agent', 'PHPUnit')
             ->get('/_tests/device-protected')
-            ->assertForbidden();
+            ->assertRedirect('/admin/login');
+    }
+
+    public function test_registered_fingerprint_can_issue_a_new_token_after_access_token_expires(): void
+    {
+        ['device' => $device] = $this->createDeviceToken();
+        $request = Request::create('/admin/login', 'GET', [], [], [], [
+            'HTTP_USER_AGENT' => 'PHPUnit',
+        ]);
+
+        $resolvedDevice = app(DeviceJwtManager::class)->deviceFromFingerprint('testing-device', $request);
+        $newEncryptedToken = app(DeviceJwtManager::class)->issueEncryptedToken($resolvedDevice, $request);
+
+        $this->assertTrue($device->is($resolvedDevice));
+        $this->assertNotSame('', $newEncryptedToken);
+        $this->assertSame(2, DeviceAccessToken::query()->count());
     }
 
     public function test_middleware_rejects_tokens_that_do_not_match_the_device_table(): void
@@ -86,7 +108,7 @@ class DeviceAccessTokenTest extends TestCase
             ->withUnencryptedCookie(config('shadai.device_cookie'), $encryptedToken)
             ->withHeader('User-Agent', 'PHPUnit')
             ->get('/_tests/device-protected')
-            ->assertForbidden();
+            ->assertRedirect('/admin/login');
     }
 
     /**

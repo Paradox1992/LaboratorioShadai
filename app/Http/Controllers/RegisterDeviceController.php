@@ -32,6 +32,17 @@ class RegisterDeviceController extends Controller
 
         return redirect('/admin/login')
             ->withCookie(cookie(
+                config('shadai.device_fingerprint_cookie'),
+                $fingerprint,
+                60 * 24 * 365 * 5,
+                '/',
+                null,
+                $request->isSecure(),
+                true,
+                false,
+                'strict',
+            ))
+            ->withCookie(cookie(
                 config('shadai.device_cookie'),
                 $encryptedToken,
                 $deviceJwtManager->ttlMinutes(),
