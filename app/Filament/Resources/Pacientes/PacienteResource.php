@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pacientes;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\Pacientes\Pages\CreatePaciente;
 use App\Filament\Resources\Pacientes\Pages\EditPaciente;
 use App\Filament\Resources\Pacientes\Pages\ListPacientes;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class PacienteResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = Paciente::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;

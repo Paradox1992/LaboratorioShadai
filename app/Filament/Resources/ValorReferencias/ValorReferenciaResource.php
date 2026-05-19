@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ValorReferencias;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\ValorReferencias\Pages\CreateValorReferencia;
 use App\Filament\Resources\ValorReferencias\Pages\EditValorReferencia;
 use App\Filament\Resources\ValorReferencias\Pages\ListValorReferencias;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ValorReferenciaResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = ValorReferencia::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;

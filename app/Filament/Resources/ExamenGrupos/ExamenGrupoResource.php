@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ExamenGrupos;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\ExamenGrupos\Pages\CreateExamenGrupo;
 use App\Filament\Resources\ExamenGrupos\Pages\EditExamenGrupo;
 use App\Filament\Resources\ExamenGrupos\Pages\ListExamenGrupos;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ExamenGrupoResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = ExamenGrupo::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleGroup;

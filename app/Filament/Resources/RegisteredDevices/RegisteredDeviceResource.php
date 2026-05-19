@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RegisteredDevices;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\RegisteredDevices\Pages\CreateRegisteredDevice;
 use App\Filament\Resources\RegisteredDevices\Pages\EditRegisteredDevice;
 use App\Filament\Resources\RegisteredDevices\Pages\ListRegisteredDevices;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class RegisteredDeviceResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = RegisteredDevice::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedComputerDesktop;

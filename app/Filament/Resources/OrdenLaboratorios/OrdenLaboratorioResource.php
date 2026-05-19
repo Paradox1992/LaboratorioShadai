@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrdenLaboratorios;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\OrdenLaboratorios\Pages\CreateOrdenLaboratorio;
 use App\Filament\Resources\OrdenLaboratorios\Pages\EditOrdenLaboratorio;
 use App\Filament\Resources\OrdenLaboratorios\Pages\ListOrdenLaboratorios;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class OrdenLaboratorioResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = OrdenLaboratorio::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;

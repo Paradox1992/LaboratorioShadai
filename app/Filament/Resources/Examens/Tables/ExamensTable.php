@@ -19,10 +19,15 @@ class ExamensTable
     {
         return $table
             ->columns([
-                TextColumn::make('grupo.id')
-                    ->searchable(),
-                TextColumn::make('tipoMuestra.id')
-                    ->searchable(),
+                TextColumn::make('grupo.nombre')
+                    ->label('Grupo')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('tipoMuestra.nombre')
+                    ->label('Tipo muestra')
+                    ->placeholder('-')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('nombre')
                     ->searchable(),
                 IconColumn::make('requiere_ayuno')
@@ -49,6 +54,10 @@ class ExamensTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->searchable([
+                'nombre',
+                'descripcion',
             ])
             ->filters([
                 TrashedFilter::make(),

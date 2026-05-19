@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\NivelReferencias;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\NivelReferencias\Pages\CreateNivelReferencia;
 use App\Filament\Resources\NivelReferencias\Pages\EditNivelReferencia;
 use App\Filament\Resources\NivelReferencias\Pages\ListNivelReferencias;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class NivelReferenciaResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = NivelReferencia::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;

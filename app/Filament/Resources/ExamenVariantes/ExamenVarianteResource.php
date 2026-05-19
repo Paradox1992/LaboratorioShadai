@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ExamenVariantes;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\ExamenVariantes\Pages\CreateExamenVariante;
 use App\Filament\Resources\ExamenVariantes\Pages\EditExamenVariante;
 use App\Filament\Resources\ExamenVariantes\Pages\ListExamenVariantes;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ExamenVarianteResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = ExamenVariante::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;

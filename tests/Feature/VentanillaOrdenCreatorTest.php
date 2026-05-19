@@ -12,6 +12,7 @@ use App\Models\TipoMuestra;
 use App\Models\UnidadMedida;
 use App\Models\User;
 use App\Models\ValorReferencia;
+use App\UserRole;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -27,7 +28,7 @@ class VentanillaOrdenCreatorTest extends TestCase
             'usuario' => 'recepcion',
             'correo' => 'recepcion@example.com',
             'password' => 'password',
-            'rol' => 'USUARIO',
+            'rol' => UserRole::User->value,
             'estado' => true,
         ]);
 
@@ -117,7 +118,7 @@ class VentanillaOrdenCreatorTest extends TestCase
             'usuario' => 'recepcion-duplicado',
             'correo' => 'recepcion-duplicado@example.com',
             'password' => 'password',
-            'rol' => 'USUARIO',
+            'rol' => UserRole::User->value,
             'estado' => true,
         ]);
 

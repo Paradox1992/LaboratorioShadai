@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\VarianteOpcions;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\VarianteOpcions\Pages\CreateVarianteOpcion;
 use App\Filament\Resources\VarianteOpcions\Pages\EditVarianteOpcion;
 use App\Filament\Resources\VarianteOpcions\Pages\ListVarianteOpcions;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class VarianteOpcionResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = VarianteOpcion::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;

@@ -9,6 +9,7 @@ use App\Filament\Resources\AuditoriaEventos\Pages\ViewAuditoriaEvento;
 use App\Filament\Resources\AuditoriaEventos\Schemas\AuditoriaEventoForm;
 use App\Filament\Resources\AuditoriaEventos\Schemas\AuditoriaEventoInfolist;
 use App\Filament\Resources\AuditoriaEventos\Tables\AuditoriaEventosTable;
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Models\AuditoriaEvento;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -19,6 +20,8 @@ use UnitEnum;
 
 class AuditoriaEventoResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = AuditoriaEvento::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;

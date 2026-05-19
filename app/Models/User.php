@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'usuarios_sistema';
 
@@ -33,6 +35,11 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function canAccessPanel(Panel $panel): bool
     {
         return (bool) $this->estado;
+    }
+
+    public function role(): ?UserRole
+    {
+        return UserRole::fromStoredValue($this->rol);
     }
 
     public function getFilamentName(): string

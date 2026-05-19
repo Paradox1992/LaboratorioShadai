@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\VentanillaOrdens;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\VentanillaOrdens\Pages\CreateVentanillaOrden;
 use App\Filament\Resources\VentanillaOrdens\Pages\EditVentanillaOrden;
 use App\Filament\Resources\VentanillaOrdens\Pages\ListVentanillaOrdens;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class VentanillaOrdenResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = VentanillaOrden::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;

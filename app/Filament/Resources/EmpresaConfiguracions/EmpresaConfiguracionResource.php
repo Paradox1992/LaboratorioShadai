@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EmpresaConfiguracions;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\EmpresaConfiguracions\Pages\CreateEmpresaConfiguracion;
 use App\Filament\Resources\EmpresaConfiguracions\Pages\EditEmpresaConfiguracion;
 use App\Filament\Resources\EmpresaConfiguracions\Pages\ListEmpresaConfiguracions;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class EmpresaConfiguracionResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = EmpresaConfiguracion::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;

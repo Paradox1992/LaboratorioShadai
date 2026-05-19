@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\UserRole;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -25,8 +27,10 @@ class UserForm
                     ->password()
                     ->dehydrated(fn (?string $state): bool => filled($state))
                     ->required(fn (string $operation): bool => $operation === 'create'),
-                TextInput::make('rol')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Rol o perfil operativo asignado al usuario.'),
+                Select::make('rol')
+                    ->hintIcon('heroicon-o-question-mark-circle', 'Rol o perfil operativo asignado al usuario.')
+                    ->options(UserRole::options())
+                    ->required(),
                 Toggle::make('estado')
                     ->hintIcon('heroicon-o-question-mark-circle', 'Permite o bloquea el acceso del usuario al panel.')
                     ->required(),

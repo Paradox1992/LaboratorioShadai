@@ -8,6 +8,7 @@ use App\Models\NivelReferencia;
 use App\Models\TipoMuestra;
 use App\Models\UnidadMedida;
 use App\Models\User;
+use App\UserRole;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
                 'nombre' => 'Administrador',
                 'correo' => 'admin@laboratorioshadai.local',
                 'password' => Hash::make('admin12345'),
-                'rol' => 'ADMIN',
+                'rol' => UserRole::Soporte->value,
                 'estado' => true,
             ],
         );

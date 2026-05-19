@@ -13,9 +13,9 @@ class ExamenInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('grupo.id')
+                TextEntry::make('grupo.nombre')
                     ->label('Grupo'),
-                TextEntry::make('tipoMuestra.id')
+                TextEntry::make('tipoMuestra.nombre')
                     ->label('Tipo muestra')
                     ->placeholder('-'),
                 TextEntry::make('nombre'),

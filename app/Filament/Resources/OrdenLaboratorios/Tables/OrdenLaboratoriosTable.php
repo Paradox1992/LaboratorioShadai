@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\OrdenLaboratorios\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -74,7 +74,7 @@ class OrdenLaboratoriosTable
                 Action::make('imprimirResultados')
                     ->label('Resultados')
                     ->icon('heroicon-o-document-text')
-                    ->url(fn ($record): string => route('resultados.pdf', $record))
+                    ->url(fn ($record): string => route('resultados.imprimir', $record))
                     ->openUrlInNewTab(),
             ])
             ->toolbarActions([

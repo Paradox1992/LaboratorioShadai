@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TipoMuestras;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\TipoMuestras\Pages\CreateTipoMuestra;
 use App\Filament\Resources\TipoMuestras\Pages\EditTipoMuestra;
 use App\Filament\Resources\TipoMuestras\Pages\ListTipoMuestras;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class TipoMuestraResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = TipoMuestra::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBeaker;

@@ -183,7 +183,6 @@
         }
 
         .stamp {
-            border: 4px solid #111;
             padding: 2px;
             width: 32mm;
         }
@@ -248,7 +247,7 @@
 </head>
 <body>
     <div class="toolbar">
-        <a href="{{ route('resultados.pdf', $orden) }}">Imprimir / guardar PDF</a>
+        <a href="{{ route('resultados.pdf', $orden) }}" target="_blank" rel="noopener">Guardar PDF</a>
         <button type="button" onclick="window.print()">Imprimir desde navegador</button>
     </div>
 

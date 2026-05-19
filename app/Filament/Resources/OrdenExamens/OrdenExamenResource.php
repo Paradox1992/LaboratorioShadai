@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrdenExamens;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\OrdenExamens\Pages\CreateOrdenExamen;
 use App\Filament\Resources\OrdenExamens\Pages\EditOrdenExamen;
 use App\Filament\Resources\OrdenExamens\Pages\ListOrdenExamens;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class OrdenExamenResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = OrdenExamen::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;

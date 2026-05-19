@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UnidadMedidas;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\UnidadMedidas\Pages\CreateUnidadMedida;
 use App\Filament\Resources\UnidadMedidas\Pages\EditUnidadMedida;
 use App\Filament\Resources\UnidadMedidas\Pages\ListUnidadMedidas;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class UnidadMedidaResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = UnidadMedida::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;

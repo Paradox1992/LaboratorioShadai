@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ResultadoExamens;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\ResultadoExamens\Pages\CreateResultadoExamen;
 use App\Filament\Resources\ResultadoExamens\Pages\EditResultadoExamen;
 use App\Filament\Resources\ResultadoExamens\Pages\ListResultadoExamens;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ResultadoExamenResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = ResultadoExamen::class;
 
     protected static bool $shouldRegisterNavigation = false;

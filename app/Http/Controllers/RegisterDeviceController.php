@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\RegisteredDevice;
+use App\Security\DeviceJwtManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class RegisterDeviceController extends Controller
 {
-    public function __invoke(Request $request, string $token): RedirectResponse
+    public function __invoke(Request $request, string $token, DeviceJwtManager $deviceJwtManager): RedirectResponse
     {
         $device = RegisteredDevice::query()
             ->where('registro_token_hash', hash('sha256', $token))
@@ -27,14 +28,16 @@ class RegisterDeviceController extends Controller
             'ultimo_acceso_at' => now(),
         ])->save();
 
+        $encryptedToken = $deviceJwtManager->issueEncryptedToken($device, $request);
+
         return redirect('/admin/login')
             ->withCookie(cookie(
                 config('shadai.device_cookie'),
-                $fingerprint,
-                60 * 24 * 365 * 5,
+                $encryptedToken,
+                $deviceJwtManager->ttlMinutes(),
                 '/',
                 null,
-                false,
+                $request->isSecure(),
                 true,
                 false,
                 'strict',

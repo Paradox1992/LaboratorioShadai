@@ -79,12 +79,12 @@ class VentanillaOrdensTable
                         $indicators = [];
 
                         if ($data['desde'] ?? null) {
-                            $indicators[] = Indicator::make('Desde ' . Carbon::parse($data['desde'])->toDateString())
+                            $indicators[] = Indicator::make('Desde '.Carbon::parse($data['desde'])->toDateString())
                                 ->removeField('desde');
                         }
 
                         if ($data['hasta'] ?? null) {
-                            $indicators[] = Indicator::make('Hasta ' . Carbon::parse($data['hasta'])->toDateString())
+                            $indicators[] = Indicator::make('Hasta '.Carbon::parse($data['hasta'])->toDateString())
                                 ->removeField('hasta');
                         }
 
@@ -101,7 +101,7 @@ class VentanillaOrdensTable
                     ->label('Imprimir')
                     ->icon('heroicon-o-printer')
                     ->url(fn ($record): ?string => $record->ordenLaboratorio
-                        ? route('resultados.pdf', $record->ordenLaboratorio)
+                        ? route('resultados.imprimir', $record->ordenLaboratorio)
                         : null)
                     ->visible(fn ($record): bool => filled($record->ordenLaboratorio))
                     ->openUrlInNewTab(),

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Examens;
 
+use App\Filament\Resources\Concerns\AuthorizesResourceAccess;
 use App\Filament\Resources\Examens\Pages\CreateExamen;
 use App\Filament\Resources\Examens\Pages\EditExamen;
 use App\Filament\Resources\Examens\Pages\ListExamens;
@@ -21,6 +22,8 @@ use UnitEnum;
 
 class ExamenResource extends Resource
 {
+    use AuthorizesResourceAccess;
+
     protected static ?string $model = Examen::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;

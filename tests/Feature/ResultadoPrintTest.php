@@ -13,7 +13,10 @@ use App\Models\TipoMuestra;
 use App\Models\UnidadMedida;
 use App\Models\User;
 use App\Models\ValorReferencia;
+use App\Security\DeviceJwtManager;
+use App\UserRole;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Http\Request;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\LaravelPdf\PdfBuilder;
 use Tests\TestCase;
@@ -24,11 +27,11 @@ class ResultadoPrintTest extends TestCase
 
     public function test_it_renders_printable_results_grouped_by_exam_group(): void
     {
-        ['user' => $user, 'fingerprint' => $fingerprint, 'orden' => $orden] = $this->crearOrdenConResultados();
+        ['user' => $user, 'deviceToken' => $deviceToken, 'orden' => $orden] = $this->crearOrdenConResultados();
 
         $response = $this
             ->actingAs($user)
-            ->withCookie(config('shadai.device_cookie'), $fingerprint)
+            ->withCookie(config('shadai.device_cookie'), $deviceToken)
             ->get(route('resultados.imprimir', $orden));
 
         $response
@@ -49,11 +52,11 @@ class ResultadoPrintTest extends TestCase
     {
         Pdf::fake();
 
-        ['user' => $user, 'fingerprint' => $fingerprint, 'orden' => $orden] = $this->crearOrdenConResultados();
+        ['user' => $user, 'deviceToken' => $deviceToken, 'orden' => $orden] = $this->crearOrdenConResultados();
 
         $response = $this
             ->actingAs($user)
-            ->withCookie(config('shadai.device_cookie'), $fingerprint)
+            ->withCookie(config('shadai.device_cookie'), $deviceToken)
             ->get(route('resultados.pdf', $orden));
 
         $response->assertOk();
@@ -79,7 +82,7 @@ class ResultadoPrintTest extends TestCase
     }
 
     /**
-     * @return array{user: User, fingerprint: string, orden: OrdenLaboratorio}
+     * @return array{user: User, deviceToken: string, orden: OrdenLaboratorio}
      */
     private function crearOrdenConResultados(): array
     {
@@ -88,13 +91,13 @@ class ResultadoPrintTest extends TestCase
             'usuario' => 'recepcion',
             'correo' => 'recepcion@example.com',
             'password' => 'password',
-            'rol' => 'USUARIO',
+            'rol' => UserRole::Operador->value,
             'estado' => true,
         ]);
 
         $fingerprint = 'testing-device';
 
-        RegisteredDevice::create([
+        $device = RegisteredDevice::create([
             'usuario_id' => $user->id,
             'nombre' => 'Equipo de prueba',
             'fingerprint_hash' => hash('sha256', $fingerprint),
@@ -104,6 +107,7 @@ class ResultadoPrintTest extends TestCase
             'registrado_at' => now(),
             'estado' => true,
         ]);
+        $deviceToken = app(DeviceJwtManager::class)->issueEncryptedToken($device, Request::create('/'));
 
         $paciente = Paciente::create([
             'docid' => '0801199012345',
@@ -192,7 +196,7 @@ class ResultadoPrintTest extends TestCase
 
         return [
             'user' => $user,
-            'fingerprint' => $fingerprint,
+            'deviceToken' => $deviceToken,
             'orden' => $orden,
         ];
     }
