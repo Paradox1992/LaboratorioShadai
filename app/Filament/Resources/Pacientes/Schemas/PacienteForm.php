@@ -31,7 +31,7 @@ class PacienteForm
                     ->required(),
                 TextInput::make('apellidos')
                     ->hintIcon('heroicon-o-question-mark-circle', 'Apellidos legales del paciente.')
-                    ->rule(fn (Get $get, ?Paciente $record): Unique => self::uniqueNombreApellidoRule($get, $record))
+                    ->rule(fn(Get $get, ?Paciente $record): Unique => self::uniqueNombreApellidoRule($get, $record))
                     ->required(),
                 Select::make('sexo')
                     ->hintIcon('heroicon-o-question-mark-circle', 'Sexo biologico usado para valores de referencia.')
@@ -44,42 +44,21 @@ class PacienteForm
                     ->length(8)
                     ->regex('/^\d{8}$/')
                     ->tel(),
-                TextInput::make('correo')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Correo del paciente para contacto o envio de informacion.'),
+                TextInput::make('edad')
+                    ->maxLength(2)
+                    ->regex('/^\d{1,2}$/')
+                    ->hintIcon('heroicon-o-question-mark-circle', 'Edad del paciente.')
+                    ->numeric(),
                 Textarea::make('direccion')
                     ->hintIcon('heroicon-o-question-mark-circle', 'Direccion de residencia o contacto del paciente.')
-                    ->columnSpanFull(),
-                TextInput::make('contacto_emergencia_nombre')
-                    ->maxLength(50)
-                    ->regex('/^\p{L}+(?: \p{L}+)*$/u')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Persona a contactar ante una emergencia.'),
-                TextInput::make('contacto_emergencia_telefono')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Telefono de la persona de emergencia.')
-                    ->length(8)
-                    ->regex('/^\d{8}$/')
-                    ->tel(),
-                Textarea::make('alergias')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Alergias conocidas relevantes para la atencion.')
-                    ->maxLength(200)
-                    ->regex('/^\p{L}+(?: \p{L}+)*$/u')
-                    ->columnSpanFull(),
-                Textarea::make('enfermedades_base')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Condiciones o enfermedades cronicas declaradas.')
-                    ->maxLength(200)
-                    ->regex('/^\p{L}+(?: \p{L}+)*$/u')
-                    ->columnSpanFull(),
-                Textarea::make('observacion')
-                    ->hintIcon('heroicon-o-question-mark-circle', 'Notas generales sobre el paciente.')
-                    ->maxLength(200)
-                    ->regex('/^\p{L}+(?: \p{L}+)*$/u')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
             ]);
     }
 
     private static function uniqueNombreApellidoRule(Get $get, ?Paciente $record): Unique
     {
         return Rule::unique(Paciente::class, 'apellidos')
-            ->where(fn (Builder $query): Builder => $query->where('nombres', $get('nombres')))
-            ->when($record, fn (Unique $rule): Unique => $rule->ignore($record->getKey()));
+            ->where(fn(Builder $query): Builder => $query->where('nombres', $get('nombres')))
+            ->when($record, fn(Unique $rule): Unique => $rule->ignore($record->getKey()));
     }
 }

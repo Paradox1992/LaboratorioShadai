@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <title></title>
@@ -63,11 +64,11 @@
 
         .watermark {
             left: 50%;
-            opacity: 0.18;
+            opacity: 0.17;
             position: fixed;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 88mm;
+            width:  150mm;
             z-index: 0;
         }
 
@@ -245,6 +246,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="toolbar">
         <a href="{{ route('resultados.pdf', $orden) }}" target="_blank" rel="noopener">Guardar PDF</a>
@@ -286,18 +288,19 @@
                         <thead>
                             <tr>
                                 <th style="width: 32%">Prueba</th>
+                                 <th style="width: 31%">Resultado</th>
                                 <th style="width: 37%">Valor de referencia</th>
-                                <th style="width: 31%">Resultado</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($resultados as $resultado)
                                 <tr>
                                     <td>{{ $resultado['prueba'] }}</td>
-                                    <td>{{ $resultado['referencia'] }}</td>
-                                    <td class="result {{ in_array($resultado['estado'], ['BAJO', 'ALTO', 'ANORMAL', 'POSITIVO'], true) ? 'abnormal' : '' }}">
+                                    <td
+                                        class="result {{ in_array($resultado['estado'], ['BAJO', 'ALTO', 'ANORMAL', 'POSITIVO'], true) ? 'abnormal' : '' }}">
                                         {{ $resultado['resultado'] }}
                                     </td>
+                                    <td>{{ $resultado['referencia'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -325,4 +328,5 @@
         </footer>
     </main>
 </body>
+
 </html>

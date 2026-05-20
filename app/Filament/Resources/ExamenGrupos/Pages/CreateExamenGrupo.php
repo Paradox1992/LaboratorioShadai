@@ -8,4 +8,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateExamenGrupo extends CreateRecord
 {
     protected static string $resource = ExamenGrupoResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
